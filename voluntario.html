@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <title>Registrar voluntarios</title>
+        <style>
+            .error { color: #c0392b; font-size: 0.85em; display: none; }
+            .error.visible { display: block; }
+        </style>
+    </head>
+
+    <body>
+        <h1>Registrar Voluntarios</h1>
+        <form id = "form-voluntario">
+            <p>
+                <label for="nombre">Nombre:</label><br>
+                <input type="text" id="nombre" required>
+                <span class="error" id="error-nombre">Debe ingresar un nombre (mínimo 3 caracteres).</span>
+            </p>
+            <p>
+                <label for="apellido">Apellido:</label><br>
+                <input type="text" id="apellido" required>
+                <span class="error" id="error-apellido">Debe ingresar un apellido (mínimo 3 caracteres).</span>
+            </p>
+            <p>
+                <label for="correo">Correo Electrónico:</label><br>
+                <input type="email" id="correo" required>
+                <span class="error" id="error-correo">Debe ingresar un correo válido.</span>
+            </p>
+            <p>
+                <label for="telefono">Teléfono:</label><br>
+                <input type="tel" id="telefono" required>
+                <span class="error" id="error-telefono">Debe ingresar un teléfono válido (10 dígitos).</span>
+            </p>
+            <p>
+                <label for="region">Región:</label><br>
+                <select id="region" required>
+                    <option value="">Seleccione una región</option>
+                    <option value="arica">Arica y Parinacota</option>
+                    <option value="tarapaca">Tarapacá</option>
+                    <option value="antofagasta">Antofagasta</option>
+                    <option value="atacama">Atacama</option>
+                    <option value="coquimbo">Coquimbo</option>
+                    <option value="valparaiso">Valparaíso</option>
+                    <option value="ohiggins">O'Higgins</option>
+                    <option value="maule">Maule</option>
+                    <option value="nuble">Ñuble</option>
+                    <option value="biobio">Biobío</option>
+                    <option value="araucania">Araucanía</option>
+                    <option value="losrios">Los Ríos</option>
+                    <option value="loslagos">Los Lagos</option>
+                    <option value="aysen">Aysén</option>
+                    <option value="magallanes">Magallanes</option>
+                    <option value="metropolitana">Región Metropolitana</option>
+                </select>
+                <span class="error" id="error-region"></span>
+            </p>
+            <p>
+                <label for="comuna">Comuna:</label><br>
+                <input type="text" id="comuna" required>
+                <span class="error" id="error-comuna">Debe ingresar una comuna (mínimo 3 caracteres).</span>
+            </p>
+
+
+            <button type="submit" class="boton">Registrar Voluntario</button>
+        </form>
+
+        <p> 
+            <a type="button" href="index.html">Volver</a>
+        </p>
+
+        <script src="js/voluntario.js"></script>
+    </body>
+</html>
