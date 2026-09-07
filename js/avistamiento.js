@@ -2,14 +2,14 @@ const formulario = document.getElementById("form-avistamiento");
 
 const tipoAve = document.getElementById("tipo-ave");
 const nombreAve = document.getElementById("nombre-Ave");
-const Lugar = document.getElementById("Lugar");
+const lugar = document.getElementById("lugar");
 const fecha = document.getElementById("fecha");
 const hora = document.getElementById("hora");
 const fotoVideo = document.getElementById("foto-video");
 
 const errorTipoAve = document.getElementById("error-tipo-ave");
 const errorNombreAve = document.getElementById("error-nombre-Ave");
-const errorLugar = document.getElementById("error-Lugar");
+const errorLugar = document.getElementById("error-lugar");
 const errorFecha = document.getElementById("error-fecha");
 const errorHora = document.getElementById("error-hora");
 const errorFotoVideo = document.getElementById("error-foto-video");
@@ -29,7 +29,7 @@ formulario.addEventListener("submit", function (event) {
         errorNombreAve.classList.remove("visible");
     }
 
-    if (Lugar.value.trim().length < 3) {
+    if (lugar.value.trim().length < 3) {
         errorLugar.classList.add("visible");
     } else {
         errorLugar.classList.remove("visible");
@@ -47,7 +47,9 @@ formulario.addEventListener("submit", function (event) {
         errorHora.classList.remove("visible");
     }
 
-    if (!fotoVideo.value) {
+    // falta validar que fecha y hora no sean futuras o muy antiguas
+
+    if (fotoVideo.files.length === 0) {
         errorFotoVideo.classList.add("visible");
     } else {
         errorFotoVideo.classList.remove("visible");

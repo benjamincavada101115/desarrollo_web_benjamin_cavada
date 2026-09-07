@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <title>Consultas de Avistamientos</title>
+    </head>
+    <p> 
+        <a href="index.html">Volver</a>
+    </p>
+    <body>
+        <h1>Consultas de Avistamientos</h1>
+        <form id = "form-avistamiento">
+            <label for="tipoAve">Tipo de ave:</label><br>
+            <select id="tipoAve">
+                <option value="todos">Todos</option>
+                <option value="Ave 1">Ave 1</option>
+                <option value="Ave 2">Ave 2</option>
+                <option value="Ave 3">Ave 3</option>
+                <option value="Ave 4">Ave 4</option>
+            </select>
+            <br><br>
+            <label for="Orden">Ordenar por:</label><br>
+            <select id="Orden">
+                <option value="fecha">Fecha</option>
+                <option value="hora">Hora</option>
+                <option value="lugar">Lugar</option>
+            </select>
+
+            <select id="OrdenTipo">
+                <option value="asc">Ascendente</option>
+                <option value="desc">Descendente</option>
+            </select>
+            <br><br>
+
+            <button type="submit">Buscar</button>
+        </form>
+        <br>
+
+        <table id="tabla-avistamientos" border="1">
+            <thead>
+                <tr>
+                    <th>Tipo de ave</th>
+                    <th>Fecha</th>
+                    <th>Hora</th>
+                    <th>Lugar</th>
+                </tr>
+            </thead>
+        </table>
+
+        <br>
+        <div id="paginas"></div>
+
+        <script src="js/avistamientos.js"></script>
+    </body>
+</html>

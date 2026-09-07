@@ -29,7 +29,7 @@ formulario.addEventListener("submit", function (event) {
         errorApellido.classList.remove("visible");
     }
 
-    if (correo.value.trim() < 3 || !correo.value.includes("@")) {
+    if (!correo.checkValidity()) {
         errorCorreo.classList.add("visible");
     } else {
         errorCorreo.classList.remove("visible");
