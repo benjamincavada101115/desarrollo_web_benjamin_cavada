@@ -35,7 +35,7 @@ formulario.addEventListener("submit", function (event) {
         errorCorreo.classList.remove("visible");
     }
 
-    if (!Number.isInteger(Number(telefono.value)) || telefono.value.trim().length < 9 || telefono.value.trim().length > 10) {
+    if (!Number.isInteger(Number(telefono.value)) || telefono.value.trim().length !== 9) {
         errorTelefono.classList.add("visible");
     } else {
         errorTelefono.classList.remove("visible");

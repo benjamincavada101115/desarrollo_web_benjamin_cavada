@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <title>Registrar Avistamientos</title>
+        <style>
+            .error { color: #c0392b; font-size: 0.85em; display: none; }
+            .error.visible { display: block; }
+        </style>
+    </head>
+
+    <body>
+        <h1>Registrar Avistamientos</h1>
+        <form id = "form-avistamiento">
+            <p>
+                <label for="tipo de ave">Tipo de ave:</label><br>
+                <input type="text" id="tipo-ave" required>
+                <span class="error" id="error-tipo-ave">Debe ingresar un tipo de ave (mínimo 3 caracteres).</span>
+            </p>
+            <p>
+                <label for="nombre-Ave">Nombre de la ave:</label><br>
+                <input type="text" id="nombre-Ave" required>
+                <span class="error" id="error-nombre-Ave">Debe ingresar un nombre de ave (mínimo 3 caracteres).</span>
+            </p>
+            <p>
+                <label for="Lugar">Lugar del avistamiento:</label><br>
+                <input type="text" id="Lugar" required>
+                <span class="error" id="error-Lugar">Debe ingresar un lugar (mínimo 3 caracteres).</span>
+            </p>
+            <p>
+                <label for="fecha">Fecha de avistamiento:</label><br>
+                <input type="date" id="fecha" required>
+                <span class="error" id="error-fecha">Debe ingresar una fecha válida.</span>
+            </p>
+            <p>
+                <label for="hora">Hora del avistamiento:</label><br>
+                <input type="time" id="hora" required>
+                <span class="error" id="error-hora">Debe ingresar una hora válida.</span>
+            </p>
+            <p>
+                <label for="foto-video">Adjuntar foto o video:</label><br>
+                <input type="file" id="foto-video" accept="image/*,video/*" required>
+                <span class="error" id="error-foto-video">Debe adjuntar una foto o video.</span>
+            </p>
+
+
+            <button type="submit" class="boton">Registrar Avistamiento</button>
+        </form>
+
+        <p> 
+            <a type="button" href="index.html">Volver</a>
+        </p>
+
+        <script src="js/avistamiento.js"></script>
+    </body>
+</html>
