@@ -3,17 +3,18 @@
     <head>
         <meta charset="UTF-8">
         <title>Registrar Avistamientos</title>
-        <style>
-            .error { color: #c0392b; font-size: 0.85em; display: none; }
-            .error.visible { display: block; }
-        </style>
+        <link rel="stylesheet" href="css/style.css">
     </head>
 
     <body>
+        <p> 
+            <a href="index.html">Volver</a>
+        </p>
+
         <h1>Registrar Avistamientos</h1>
         <form id = "form-avistamiento">
             <p>
-                <label for="tipo de ave">Tipo de ave:</label><br>
+                <label for="tipo-ave">Tipo de ave:</label><br>
                 <input type="text" id="tipo-ave" required>
                 <span class="error" id="error-tipo-ave">Debe ingresar un tipo de ave (mínimo 3 caracteres).</span>
             </p>
@@ -46,11 +47,6 @@
 
             <button type="submit" class="boton">Registrar Avistamiento</button>
         </form>
-
-        <p> 
-            <a href="index.html">Volver</a>
-        </p>
-
         <script src="js/avistamiento.js"></script>
     </body>
 </html>

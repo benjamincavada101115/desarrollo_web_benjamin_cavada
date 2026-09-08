@@ -1,0 +1,394 @@
+/* ==========================================
+   CONFIGURACIÓN GENERAL
+   ========================================== */
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #f4f7f5;
+    color: #26332c;
+    line-height: 1.5;
+}
+
+
+/* ==========================================
+   ENCABEZADOS
+   ========================================== */
+
+h1 {
+    color: #234f3a;
+    font-size: 30px;
+    margin: 30px auto;
+    width: 90%;
+    max-width: 1100px;
+}
+
+h2 {
+    color: #234f3a;
+    font-size: 24px;
+    margin: 35px auto 15px auto;
+    width: 90%;
+    max-width: 1100px;
+}
+
+h3 {
+    color: #2f6b4f;
+    font-size: 20px;
+    margin: 30px auto 15px auto;
+    width: 90%;
+    max-width: 1100px;
+}
+
+
+/* ==========================================
+   CONTENIDO PRINCIPAL
+   ========================================== */
+
+main {
+    width: 90%;
+    max-width: 1100px;
+    margin: 30px auto;
+}
+
+
+/* ==========================================
+   NAVEGACIÓN
+   ========================================== */
+
+nav {
+    background-color: #234f3a;
+    border-radius: 8px;
+    max-width: 900px;
+    margin: 40px auto;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.10);
+}
+
+nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+nav li {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+nav li:last-child {
+    border-bottom: none;
+}
+
+.navbar-page {
+    display: block;
+    padding: 18px 22px;
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.2s;
+}
+
+.navbar-page:hover {
+    background-color: #2f6b4f;
+}
+
+
+/* ==========================================
+   FORMULARIOS
+   ========================================== */
+
+form {
+    width: 90%;
+    max-width: 700px;
+    margin: 30px auto;
+    padding: 30px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.10);
+}
+
+form p {
+    margin: 0 0 20px 0;
+}
+
+
+/* ==========================================
+   LABELS
+   ========================================== */
+
+label {
+    display: inline-block;
+    margin-bottom: 6px;
+    color: #26332c;
+    font-weight: bold;
+}
+
+
+/* ==========================================
+   INPUTS Y SELECT
+   ========================================== */
+
+input,
+select {
+    width: 100%;
+    padding: 11px 12px;
+    border: 1px solid #cbd5d0;
+    border-radius: 5px;
+    background-color: white;
+    color: #26332c;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 15px;
+}
+
+input:focus,
+select:focus {
+    outline: none;
+    border-color: #2f6b4f;
+    box-shadow: 0 0 0 3px rgba(47, 107, 79, 0.15);
+}
+
+
+/* ==========================================
+   INPUT DE ARCHIVOS
+   ========================================== */
+
+input[type="file"] {
+    padding: 9px;
+    cursor: pointer;
+    background-color: #f8faf9;
+}
+
+
+/* ==========================================
+   BOTONES
+   ========================================== */
+
+.boton,
+button {
+    padding: 11px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #2f6b4f;
+    color: white;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.boton:hover,
+button:hover {
+    background-color: #234f3a;
+}
+
+button:focus,
+.boton:focus {
+    outline: 3px solid rgba(47, 107, 79, 0.25);
+}
+
+
+/* ==========================================
+   MENSAJES DE ERROR
+   ========================================== */
+
+.error {
+    color: #c0392b;
+    font-size: 0.85em;
+    display: none;
+    margin-top: 5px;
+}
+
+.error.visible {
+    display: block;
+}
+
+
+/* ==========================================
+   ENLACE VOLVER
+   ========================================== */
+
+body > p {
+    width: 90%;
+    max-width: 1100px;
+    margin: 25px auto;
+}
+
+body > p a {
+    color: #2f6b4f;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+body > p a:hover {
+    text-decoration: underline;
+}
+
+
+/* ==========================================
+   TABLAS
+   ========================================== */
+
+table {
+    width: 90%;
+    max-width: 1100px;
+    margin: 20px auto;
+    border-collapse: collapse;
+    background-color: white;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+th {
+    padding: 13px 15px;
+    background-color: #2f6b4f;
+    color: white;
+    text-align: left;
+}
+
+td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #e1e7e3;
+}
+
+tbody tr:nth-child(even) {
+    background-color: #f5f8f6;
+}
+
+tbody tr:hover {
+    background-color: #e8f2ed;
+}
+
+
+/* ==========================================
+   FORMULARIO DE CONSULTA
+   ========================================== */
+
+#form-avistamiento select {
+    width: auto;
+    min-width: 180px;
+    margin-bottom: 5px;
+}
+
+
+/* ==========================================
+   PAGINACIÓN
+   ========================================== */
+
+#paginas {
+    width: 90%;
+    max-width: 1100px;
+    margin: 20px auto;
+    text-align: center;
+}
+
+#paginas button {
+    margin: 3px;
+    padding: 8px 13px;
+}
+
+
+/* ==========================================
+   INDICADORES
+   ========================================== */
+
+#total-voluntarios,
+#region-mas-voluntarios,
+#total-avistamientos,
+#ave-mas-observada,
+#lugar-mas-avistamientos,
+#promedio-dia {
+    font-weight: bold;
+    color: #2f6b4f;
+}
+
+
+/* ==========================================
+   GRÁFICOS
+   ========================================== */
+
+#grafico-voluntarios,
+#grafico-aves {
+    width: 90%;
+    max-width: 1100px;
+    margin: 20px auto 40px auto;
+    padding: 25px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+}
+
+.barra-contenedor {
+    width: 100%;
+    margin-bottom: 18px;
+}
+
+.barra-contenedor span {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: bold;
+    color: #26332c;
+}
+
+.barra {
+    height: 28px;
+    background-color: #2f6b4f;
+    border-radius: 5px;
+    min-width: 5px;
+    transition: width 0.4s ease;
+}
+
+
+/* ==========================================
+   RESPONSIVE
+   ========================================== */
+
+@media (max-width: 700px) {
+
+    h1 {
+        font-size: 25px;
+    }
+
+    h2 {
+        font-size: 21px;
+    }
+
+    h3 {
+        font-size: 18px;
+    }
+
+    form {
+        width: 94%;
+        padding: 20px;
+    }
+
+    table {
+        width: 94%;
+        font-size: 14px;
+    }
+
+    th,
+    td {
+        padding: 9px;
+    }
+
+    #form-avistamiento select {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    nav {
+        width: 94%;
+    }
+
+    .navbar-page {
+        padding: 15px;
+    }
+
+    #grafico-voluntarios,
+    #grafico-aves {
+        width: 94%;
+        padding: 15px;
+    }
+}

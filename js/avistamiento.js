@@ -47,7 +47,44 @@ formulario.addEventListener("submit", function (event) {
         errorHora.classList.remove("visible");
     }
 
-    // falta validar que fecha y hora no sean futuras o muy antiguas
+    if (fecha.value !== "" && hora.value !== "") {
+
+    const partesFecha = fecha.value.split("-");
+    const año = Number(partesFecha[0]);
+    const mes = Number(partesFecha[1]);
+    const dia = Number(partesFecha[2]);
+
+    // Separamos la hora en horas y minutos
+    const partesHora = hora.value.split(":");
+    const horas = Number(partesHora[0]);
+    const minutos = Number(partesHora[1]);
+
+    const fechaAvistamiento = new Date(
+        año,
+        mes - 1,
+        dia,
+        horas,
+        minutos
+    );
+
+    const ahora = new Date();
+
+    const fechaMinima = new Date();
+    fechaMinima.setFullYear(fechaMinima.getFullYear() - 1);
+
+    if (fechaAvistamiento > ahora) {
+        errorFecha.textContent = "La fecha y hora no pueden ser futuras.";
+        errorFecha.classList.add("visible");
+    }
+
+    else if (fechaAvistamiento < fechaMinima) {
+        errorFecha.textContent = "El avistamiento no puede tener más de 1 año.";
+        errorFecha.classList.add("visible");
+    }
+    else {
+        errorFecha.classList.remove("visible");
+    }
+}
 
     if (fotoVideo.files.length === 0) {
         errorFotoVideo.classList.add("visible");
