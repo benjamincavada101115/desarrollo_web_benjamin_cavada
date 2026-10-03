@@ -3,10 +3,10 @@
     <head>
         <meta charset="UTF-8">
         <title>Consultas de Avistamientos</title>
-        <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     </head>
     <p> 
-        <a href="index.html">Volver</a>
+        <a href="{{ url_for('index') }}">Volver</a>
     </p>
     <body>
         <h1>Consultas de Avistamientos</h1>
@@ -51,6 +51,6 @@
         <br>
         <div id="paginas"></div>
 
-        <script src="js/avistamientos.js"></script>
+        <script src="{{ url_for('static', filename='js/avistamientos.js') }}"></script>
     </body>
 </html>

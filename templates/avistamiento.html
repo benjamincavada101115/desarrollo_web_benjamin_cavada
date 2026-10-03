@@ -3,12 +3,12 @@
     <head>
         <meta charset="UTF-8">
         <title>Registrar Avistamientos</title>
-        <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     </head>
 
     <body>
         <p> 
-            <a href="index.html">Volver</a>
+            <a href="{{ url_for('index') }}">Volver</a>
         </p>
 
         <h1>Registrar Avistamientos</h1>
@@ -47,6 +47,6 @@
 
             <button type="submit" class="boton">Registrar Avistamiento</button>
         </form>
-        <script src="js/avistamiento.js"></script>
+        <script src="{{ url_for('static', filename='js/avistamiento.js') }}"></script>
     </body>
 </html>

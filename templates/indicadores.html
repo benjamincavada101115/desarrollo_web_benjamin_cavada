@@ -4,13 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <title>Indicadores de Avistamientos</title>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 
 <body>
 
     <p>
-        <a href="index.html">Volver</a>
+        <a href="{{ url_for('index') }}">Volver</a>
     </p>
 
     <h1>Indicadores y métricas</h1>
@@ -140,7 +140,7 @@
     </div>
 
 
-    <script src="js/indicadores.js"></script>
+    <script src="{{ url_for('static', filename='js/indicadores.js') }}"></script>
 
 </body>
 
