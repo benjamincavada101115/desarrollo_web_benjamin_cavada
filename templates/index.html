@@ -13,12 +13,25 @@
         <main>
             <nav>
                 <ul>
-                    <li><a class = "navbar-page" href="{{ url_for('registrar_voluntario') }}">Registrar voluntario</a></li>
+                    <li><a class="navbar-page" href="{{ url_for('registrar_voluntario') }}">Registrar voluntario</a></li>
                     <li><a class="navbar-page" href="{{ url_for('registrar_avistamiento') }}">Registrar avistamientos</a></li>
                     <li><a class="navbar-page" href="{{ url_for('consultar_avistamientos') }}">Consultar avistamientos</a></li>
                     <li><a class="navbar-page" href="{{ url_for('ver_indicadores') }}">Ver indicadores</a></li>
                 </ul>
             </nav>
+
+            <h2> Últimos Avistamientos Registrados</h2>
+            {% if avistamientos %}
+                <ul> 
+                    {% for a in avistamientos %}
+                        <li>
+                            <strong>{{ a.ave.nombre }}</strong> - Visto en {{ a.lugar }} el {{ a.fecha_hora.strftime('%d/%m/%Y a las %H:%M') }} por {{ a.voluntario.nombre }}
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>No hay avistamientos registrados.</p>
+            {% endif %}
         </main>
     </body>
 </html>

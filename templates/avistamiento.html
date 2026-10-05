@@ -12,35 +12,43 @@
         </p>
 
         <h1>Registrar Avistamientos</h1>
-        <form id = "form-avistamiento">
+        <form id = "form-avistamiento" method="POST" action="{{ url_for('registrar_avistamiento') }}" enctype="multipart/form-data">
             <p>
-                <label for="tipo-ave">Tipo de ave:</label><br>
-                <input type="text" id="tipo-ave" required>
-                <span class="error" id="error-tipo-ave">Debe ingresar un tipo de ave (mínimo 3 caracteres).</span>
+                <label for="voluntario">Voluntario:</label><br>
+                <select id="voluntario" name="voluntario" required>
+                    <option value="">Seleccione un voluntario</option>
+                    {% for v in voluntarios %}
+                        <option value="{{ v.id }}">{{ v.nombre }}</option>
+                    {% endfor %}
+                </select>
             </p>
             <p>
-                <label for="nombre-Ave">Nombre de la ave:</label><br>
-                <input type="text" id="nombre-Ave" required>
-                <span class="error" id="error-nombre-Ave">Debe ingresar un nombre de ave (mínimo 3 caracteres).</span>
+                <label for="ave">Ave:</label><br>
+                <select id="ave" name="ave" required>
+                    <option value="">Seleccione un ave</option>
+                    {% for a in aves %}
+                        <option value="{{ a.id }}">{{ a.nombre }}</option>
+                    {% endfor %}
+                </select>
             </p>
             <p>
                 <label for="lugar">Lugar del avistamiento:</label><br>
-                <input type="text" id="lugar" required>
+                <input type="text" id="lugar" name="lugar" required>
                 <span class="error" id="error-lugar">Debe ingresar un lugar (mínimo 3 caracteres).</span>
             </p>
             <p>
                 <label for="fecha">Fecha de avistamiento:</label><br>
-                <input type="date" id="fecha" required>
+                <input type="date" id="fecha" name="fecha" required>
                 <span class="error" id="error-fecha">Debe ingresar una fecha válida.</span>
             </p>
             <p>
                 <label for="hora">Hora del avistamiento:</label><br>
-                <input type="time" id="hora" required>
+                <input type="time" id="hora" name="hora" required>
                 <span class="error" id="error-hora">Debe ingresar una hora válida.</span>
             </p>
             <p>
                 <label for="foto-video">Adjuntar foto o video:</label><br>
-                <input type="file" id="foto-video" accept="image/*,video/*" required>
+                <input type="file" id="foto-video" name="foto-video" accept="image/*,video/*" multiple required>
                 <span class="error" id="error-foto-video">Debe adjuntar una foto o video.</span>
             </p>
 

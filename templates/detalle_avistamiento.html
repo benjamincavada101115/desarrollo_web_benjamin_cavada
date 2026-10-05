@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Detalle Avistamiento</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <p><a href="{{ url_for('consultar_avistamientos') }}">Volver</a></p>
+
+    <h1>Detalle Avistamiento #{{ avistamiento.id }}</h1>
+    <p><strong>Ave:</strong> {{ avistamiento.ave.nombre }}</p>
+    <p><strong>Voluntario:</strong> {{ avistamiento.voluntario.nombre }}</p>
+    <p><strong>Lugar:</strong> {{ avistamiento.lugar }}</p>
+
+    <h2>Archivos:</h2>
+    {% for reg in avistamiento.registros %}
+        <div>
+            <img src="{{ url_for('static', filename=reg.ruta_archivo) }}" width="250">
+        </div>
+    {% endfor %}
+</body>
+</html>

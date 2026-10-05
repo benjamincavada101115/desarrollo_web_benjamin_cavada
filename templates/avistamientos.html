@@ -4,32 +4,34 @@
         <meta charset="UTF-8">
         <title>Consultas de Avistamientos</title>
         <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+        <style>
+            .fila-avistamiento { cursor: pointer; }
+            .fila-avistamiento:hover { background-color: #f4f4f4; }
+        </style>
     </head>
     <p> 
         <a href="{{ url_for('index') }}">Volver</a>
     </p>
     <body>
         <h1>Consultas de Avistamientos</h1>
-        <form id = "form-avistamiento">
+        <form id = "form-avistamiento" method="GET" action="{{ url_for('consultar_avistamientos') }}">
             <label for="tipoAve">Tipo de ave:</label><br>
-            <select id="tipoAve">
-                <option value="todos">Todos</option>
-                <option value="Ave 1">Ave 1</option>
-                <option value="Ave 2">Ave 2</option>
-                <option value="Ave 3">Ave 3</option>
-                <option value="Ave 4">Ave 4</option>
+            <select id="tipoAve" name="tipoAve">
+                <option value="todos" {% if tipo_ave == 'todos' %}selected{% endif %}>Todos</option>
+                {% for ave in aves %}
+                    <option value="{{ ave.id }}" {% if tipo_ave == ave.id|string %}selected{% endif %}>{{ ave.nombre }}</option>
+                {% endfor %}
             </select>
             <br><br>
             <label for="Orden">Ordenar por:</label><br>
-            <select id="Orden">
-                <option value="fecha">Fecha</option>
-                <option value="hora">Hora</option>
-                <option value="lugar">Lugar</option>
+            <select id="Orden" name="orden">
+                <option value="fecha" {% if orden == 'fecha' %}selected{% endif %}>Fecha</option>
+                <option value="lugar" {% if orden == 'lugar' %}selected{% endif %}>Lugar</option>
             </select>
 
-            <select id="OrdenTipo">
-                <option value="asc">Ascendente</option>
-                <option value="desc">Descendente</option>
+            <select id="OrdenTipo" name="orden_tipo">
+                <option value="asc" {% if orden_tipo == 'asc' %}selected{% endif %}>Ascendente</option>
+                <option value="desc" {% if orden_tipo == 'desc' %}selected{% endif %}>Descendente</option>
             </select>
             <br><br>
 
@@ -37,20 +39,44 @@
         </form>
         <br>
 
-        <table id="tabla-avistamientos">
+        <table id="tabla-avistamientos" border="1">
             <thead>
                 <tr>
                     <th>Tipo de ave</th>
                     <th>Fecha</th>
                     <th>Hora</th>
                     <th>Lugar</th>
+                    <th>Voluntario</th>
                 </tr>
             </thead>
+            <tbody>
+                {% for avistamiento in paginacion.items %}
+                    <tr class="fila-avistamiento" onclick="window.location.href='{{ url_for('detalle_avistamiento', id=avistamiento.id) }}'">
+                        <td>{{ avistamiento.ave.nombre }}</td>
+                        <td>{{ avistamiento.fecha_hora.strftime('%d-%m-%Y') }}</td>
+                        <td>{{ avistamiento.fecha_hora.strftime('%H:%M') }}</td>
+                        <td>{{ avistamiento.lugar }}</td>
+                        <td>{{ avistamiento.voluntario.nombre }}</td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="4">No se encuentran avistamientos con esos criterios.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
         </table>
 
         <br>
-        <div id="paginas"></div>
+        <div id="paginas">
+            {% if paginacion.has_prev %}
+                <a href="{{ url_for('consultar_avistamientos', page=paginacion.prev_num, tipoAve=tipo_ave, orden=orden, orden_tipo=orden_tipo) }}">Anterior</a>
+            {% endif %}
 
-        <script src="{{ url_for('static', filename='js/avistamientos.js') }}"></script>
+            Página {{ paginacion.page }} de {{ paginacion.pages if paginacion.pages else 1 }}
+
+            {% if paginacion.has_next %}
+                <a href="{{ url_for('consultar_avistamientos', page=paginacion.next_num, tipoAve=tipo_ave, orden=orden, orden_tipo=orden_tipo) }}">Siguiente</a>
+            {% endif %}
+        </div>
     </body>
 </html>
