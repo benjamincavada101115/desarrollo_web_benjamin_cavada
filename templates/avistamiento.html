@@ -47,6 +47,11 @@
                 <span class="error" id="error-hora">Debe ingresar una hora válida.</span>
             </p>
             <p>
+                <label for="descripcion">Descripción (opcional):</label><br>
+                <textarea id="descripcion" name="descripcion" rows="3" placeholder="Detalles observados del ave, comportamiento, clima, etc."></textarea>
+                <span class="error" id="error-descripcion">La descripción no puede exceder los 500 caracteres.</span>
+            </p>
+            <p>
                 <label for="foto-video">Adjuntar foto o video:</label><br>
                 <input type="file" id="foto-video" name="foto-video" accept="image/*,video/*" multiple required>
                 <span class="error" id="error-foto-video">Debe adjuntar una foto o video.</span>

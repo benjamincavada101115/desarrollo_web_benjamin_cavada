@@ -2,6 +2,7 @@ import os
 from datetime import datetime
 from flask import Flask, jsonify, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
+from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
 
@@ -101,6 +102,7 @@ def registrar_avistamiento():
         voluntario_id = request.form.get('voluntario')
         ave_id = request.form.get('ave')
         lugar = request.form.get('lugar', '').strip()
+        descripcion = request.form.get('descripcion', '').strip()
         fecha = request.form.get('fecha')
         hora = request.form.get('hora')
         archivos = request.files.getlist('foto-video')
@@ -112,7 +114,8 @@ def registrar_avistamiento():
                 voluntario_id=int(voluntario_id),
                 ave_id=int(ave_id),
                 fecha_hora=fecha_hora,
-                lugar=lugar
+                lugar=lugar,
+                descripcion=descripcion
             )
             db.session.add(avistamiento)
             db.session.commit()
