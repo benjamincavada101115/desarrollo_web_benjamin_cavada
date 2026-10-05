@@ -1,61 +1,36 @@
 # desarrollo_web_benjamin_cavada
 
-## Registro de voluntarios
+## Arquitectura y Base de Datos
 
-Se valida:
+El modelo relacional mapeado mediante **SQLAlchemy** está compuesto por las siguientes entidades:
 
-- Nombre con mínimo 3 caracteres.
-- Apellido con mínimo 3 caracteres.
-- Correo electrónico válido.
-- Teléfono de 9 dígitos.
-- Región obligatoria.
-- Comuna con mínimo 3 caracteres.
+- **Region / Comuna:** Manejo geográfico. Incluye la ruta `/get_comunas/<region_id>` para la carga dinámica de comunas mediante AJAX.
+- **Voluntario:** Datos personales y comuna asociada.
+- **Ave:** Catálogo de aves disponibles.
+- **Avistamiento:** Registro con voluntario, ave, lugar, fecha/hora y campo opcional de `descripcion`.
+- **Registro:** Almacenamiento de rutas de archivos multimedia asociados a cada avistamiento.
 
-## Registro de avistamientos
+### Registro de Voluntarios
+* **Servidor (Flask) y Cliente (JS):**
+  - Nombre y apellido con mínimo 3 caracteres cada uno.
+  - Correo electrónico en formato válido (`@`).
+  - Teléfono numérico exacto de 9 dígitos.
+  - Región y comuna obligatorias.
 
-Se valida:
+### Registro de Avistamientos
+* **Servidor (Flask) y Cliente (JS):**
+  - Selección obligatoria de Voluntario y Ave desde la base de datos.
+  - Lugar con un mínimo de 3 caracteres.
+  - Fecha y hora obligatorias.
+  - **Fecha/Hora:** No puede ser una fecha futura ni tener más de 1 año de antigüedad respecto al momento del registro.
+  - **Descripción:** Campo opcional con un límite máximo de 500 caracteres.
+  - **Multimedia:** Subida obligatoria de al menos un archivo (imagen o video), procesado de forma segura con `secure_filename` y almacenado en `static/uploads/`.
 
-- Tipo de ave con mínimo 3 caracteres.
-- Nombre del ave con mínimo 3 caracteres.
-- Lugar con mínimo 3 caracteres.
-- Fecha y hora obligatorias.
-- Foto o video obligatorio.
-- La fecha y hora del avistamiento no pueden ser futuras.
-- La fecha del avistamiento no puede ser de más de un año atrás.
+## Funcionalidades del Sistema
 
-## Fecha y hora de los avistamientos
-
-Para validar que un avistamiento no sea futuro, se combinan la fecha y la hora ingresadas por el usuario en un objeto `Date` de JavaScript y se compara con la fecha y hora actual.
-Para este prototipo se estableció como límite que los avistamientos no pueden tener más de un año de antigüedad.
-
-## Datos utilizados
-
-Como la tarea corresponde solamente a un prototipo y no requiere almacenar información en un servidor, los datos de voluntarios y avistamientos utilizados en las páginas de consulta e indicadores están definidos directamente en arreglos de JavaScript.
-
-## Consulta de avistamientos
-
-La página de consultas permite:
-
-- Filtrar por tipo de ave.
-- Ordenar por fecha, hora o lugar.
-- Ordenar de forma ascendente o descendente.
-- Mostrar los resultados mediante paginación.
-
-Se utilizan datos de ejemplo para demostrar el funcionamiento de estas opciones.
-
-## Indicadores
-
-La página de indicadores calcula:
-
-- Total de voluntarios.
-- Región con mayor cantidad de voluntarios.
-- Cantidad de voluntarios por región.
-- Total de avistamientos.
-- Ave más observada.
-- Lugar con más avistamientos.
-- Promedio de avistamientos por día.
-- Cantidad de avistamientos por lugar.
-- Cantidad de avistamientos por tipo de ave.
-
-Los gráficos fueron implementados directamente con HTML, CSS y JavaScript,
-sin utilizar librerías externas.
+* **Inicio (`/`):** Muestra los últimos 2 avistamientos registrados ordenados por ID de forma descendente.
+* **Consulta de Avistamientos (`/consultar_avistamientos`):**
+  - Filtrado dinámico por tipo de ave.
+  - Ordenamiento por fecha o lugar (ascendente / descendente).
+  - Paginación en servidor (3 avistamientos por página).
+* **Detalle del Avistamiento (`/avistamiento/<id>`):** Vista individual centrada con la información del avistamiento, descripción y galería de archivos multimedia (imágenes/videos).
