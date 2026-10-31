@@ -3,144 +3,63 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Indicadores de Avistamientos</title>
+    <title>Estadísticas</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="https://code.highcharts.com/highcharts.js"></script>
 </head>
 
 <body>
+    <h1>Estadísticas</h1>
 
-    <p>
+   <div id="grafico-lineas" style="width:100%; max-width:800px; height:400px; margin:20px auto;"></div>
+    <div id="grafico-torta" style="width:100%; max-width:800px; height:400px; margin:20px auto;"></div>
+    <div id="grafico-barras" style="width:100%; max-width:800px; height:400px; margin:20px auto;"></div>
+
+    <p style="text-align: center; margin: 30px 0;">
         <a href="{{ url_for('index') }}">Volver</a>
     </p>
 
-    <h1>Indicadores y métricas</h1>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+        try {
+                const res = await fetch('/api/estadisticas');
+                const data = await res.json();
 
-    <h2>Voluntarios registrados</h2>
+                // 1. Gráfico de Líneas: Avistamientos por día
+                Highcharts.chart('grafico-lineas', {
+                    chart: { type: 'line' },
+                    title: { text: 'Cantidad de Avistamientos por Día' },
+                    xAxis: { categories: data.lineas.labels, title: { text: 'Días' } },
+                    yAxis: { title: { text: 'Cantidad de Avistamientos' } },
+                    series: [{ name: 'Avistamientos', data: data.lineas.data }]
+                });
 
-    <table>
-        <thead>
-            <tr>
-                <th>Indicador</th>
-                <th>Resultado</th>
-            </tr>
-        </thead>
+                // 2. Gráfico de Torta: Avistamientos por tipo de ave
+                const tortaSeriesData = data.torta.labels.map((label, idx) => ({
+                    name: label,
+                    y: data.torta.data[idx]
+                }));
 
-        <tbody>
+                Highcharts.chart('grafico-torta', {
+                    chart: { type: 'pie' },
+                    title: { text: 'Total de Avistamientos por Tipo de Ave' },
+                    series: [{ name: 'Avistamientos', data: tortaSeriesData }]
+                });
 
-            <tr>
-                <td>Total de voluntarios registrados</td>
-                <td id="total-voluntarios"></td>
-            </tr>
+                // 3. Gráfico de Barras: Voluntarios por comuna
+                Highcharts.chart('grafico-barras', {
+                    chart: { type: 'column' },
+                    title: { text: 'Total de Voluntarios Registrados por Comuna' },
+                    xAxis: { categories: data.barras.labels, title: { text: 'Comunas' } },
+                    yAxis: { title: { text: 'Total de Voluntarios' } },
+                    series: [{ name: 'Voluntarios', data: data.barras.data }]
+                });
 
-            <tr>
-                <td>Región con más voluntarios</td>
-                <td id="region-mas-voluntarios"></td>
-            </tr>
-
-        </tbody>
-    </table>
-
-
-    <h3>Voluntarios por región</h3>
-
-    <table>
-
-        <thead>
-            <tr>
-                <th>Región</th>
-                <th>Cantidad</th>
-            </tr>
-        </thead>
-
-        <tbody id="tabla-voluntarios">
-        </tbody>
-
-    </table>
-
-    <h3>Gráfico de voluntarios por región</h3>
-
-    <div id="grafico-voluntarios">
-    </div>
-
-    <h2>Avistamientos registrados</h2>
-
-    <table>
-
-        <thead>
-            <tr>
-                <th>Indicador</th>
-                <th>Resultado</th>
-            </tr>
-        </thead>
-
-        <tbody>
-
-            <tr>
-                <td>Total de avistamientos</td>
-                <td id="total-avistamientos"></td>
-            </tr>
-
-            <tr>
-                <td>Ave más observada</td>
-                <td id="ave-mas-observada"></td>
-            </tr>
-
-            <tr>
-                <td>Lugar con más avistamientos</td>
-                <td id="lugar-mas-avistamientos"></td>
-            </tr>
-
-            <tr>
-                <td>Promedio de avistamientos por día</td>
-                <td id="promedio-dia"></td>
-            </tr>
-
-        </tbody>
-
-    </table>
-
-
-    <!-- Avistamientos por lugar -->
-
-    <h3>Avistamientos por lugar</h3>
-
-    <table>
-
-        <thead>
-            <tr>
-                <th>Lugar</th>
-                <th>Cantidad</th>
-            </tr>
-        </thead>
-
-        <tbody id="tabla-lugares">
-        </tbody>
-
-    </table>
-
-    <h3>Avistamientos por tipo de ave</h3>
-
-    <table>
-
-        <thead>
-            <tr>
-                <th>Tipo de ave</th>
-                <th>Cantidad</th>
-            </tr>
-        </thead>
-
-        <tbody id="tabla-aves">
-        </tbody>
-
-    </table>
-
-    <h3>Gráfico de avistamientos por tipo de ave</h3>
-
-    <div id="grafico-aves">
-    </div>
-
-
-    <script src="{{ url_for('static', filename='js/indicadores.js') }}"></script>
+            } catch (err) {
+                console.error('Error al cargar las estadísticas:', err);
+            }
+        });
+    </script>
 
 </body>
 

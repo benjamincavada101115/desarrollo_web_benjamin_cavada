@@ -9,13 +9,16 @@ document.addEventListener("DOMContentLoaded", () => {
         mensajeError.style.display = "none";
         mensajeError.innerHTML = "";
 
+        const nombreVal = document.getElementById("nombre").value.trim();
+        const textoVal = document.getElementById("texto").value.trim();
+
         let errores = [];
 
-        if (nombre.value.length < 3 || nombre.value.length > 50) {
+        if (nombreVal.length < 3 || nombreVal.length > 50) {
             errores.push("El nombre debe tener entre 3 y 50 caracteres.");
         }
 
-        if (texto.value.length < 5) {
+        if (textoVal.length < 5) {
             errores.push("El comentario debe tener al menos 5 caracteres.");
         }
 
@@ -26,10 +29,10 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         try {
-            const response = await fetch("/api/avistamiento/${avistamientoId}/comentarios", {
+            const response = await fetch(`/api/avistamiento/${avistamientoId}/comentarios`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ nombre, texto })
+                body: JSON.stringify({ nombre: nombreVal, texto: textoVal })
             });
 
             const result = await response.json();
@@ -37,15 +40,11 @@ document.addEventListener("DOMContentLoaded", () => {
             if (response.ok && result.success) {
                 form.reset();
                 cargarComentarios();
-            } 
-        
-            else {
-                mensajeError.innerHTML = (result.error || [result.mensaje]).join("<br>");
+            } else {
+                mensajeError.innerHTML = (result.errores || [result.mensaje]).join("<br>");
                 mensajeError.style.display = "block";
             }
-        }
-
-        catch (error) {
+        } catch (error) {
             mensajeError.innerHTML = "Error al comunicarse con el servidor.";
             mensajeError.style.display = "block";
         }
@@ -55,7 +54,7 @@ document.addEventListener("DOMContentLoaded", () => {
 async function cargarComentarios() {
     const contenedor = document.getElementById("contenedor-comentarios");
     try {
-        const response = await fetch("/api/avistamiento/${avistamientoId}/comentarios");
+        const response = await fetch(`/api/avistamiento/${avistamientoId}/comentarios`);
         const comentarios = await response.json();
 
         if (comentarios.length === 0) {
@@ -69,9 +68,7 @@ async function cargarComentarios() {
                 <p>${escapeHTML(c.texto)}</p>
             </div>
         `).join('');
-    } 
-    
-    catch (error) {
+    } catch (error) {
         contenedor.innerHTML = "<p>Error al cargar los comentarios.</p>";
     }
 }
