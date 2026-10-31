@@ -16,7 +16,7 @@
     <p><strong>Descripción:</strong> {{ avistamiento.descripcion or 'Sin descripción disponible.' }}</p>
 
     <h2>Archivos:</h2>
-   <div class="galeria-archivos">
+    <div class="galeria-archivos">
         {% for reg in avistamiento.registros %}
             {% if reg.ruta_archivo.endswith('.mp4') or reg.ruta_archivo.endswith('.mov') %}
                 <video controls src="{{ url_for('static', filename=reg.ruta_archivo) }}"></video>
@@ -27,5 +27,31 @@
             <p>No hay archivos adjuntos.</p>
         {% endfor %}
     </div>
+
+    <h2>Comentarios:</h2>
+    <div id="contenedor-comentarios">
+    </div>
+
+    <h3>Agregar Comentario:</h3>
+    <div id="mensaje-error" style="color: red; display: none;"></div>
+
+    <form id="form-comentario">
+        <div>
+            <label for="nombre">Nombre:</label><br>
+            <input type="text" id="nombre" name="nombre" minlength="3" maxlength="50" required>
+        </div>
+        <br>
+        <div>
+            <label for="texto">Comentario:</label><br>
+            <textarea id="texto" name="texto" rows="3" cols="40" minlength="5" required></textarea>
+        </div>
+        <br>
+        <button type="submit">Agregar Comentario</button>
+    </form>
+
+    <script>
+        const avistamientoId = {{ avistamiento.id }};
+    </script>
+    <script src="{{ url_for('static', filename='js/comentarios.js') }}"></script>
 </body>
 </html>
