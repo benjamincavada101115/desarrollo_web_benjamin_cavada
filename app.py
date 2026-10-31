@@ -2,6 +2,7 @@ import os
 from datetime import datetime
 from flask import Flask, jsonify, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import func
 from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
@@ -60,6 +61,16 @@ class Registro(db.Model):
     ruta_archivo = db.Column(db.String(300), nullable=False)
     nombre_archivo = db.Column(db.String(300), nullable=False)
     avistamiento_id = db.Column(db.Integer, db.ForeignKey('avistamiento.id'), nullable=False)
+
+class Comentario(db.Model):
+    __tablename__ = 'comentario'
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    nombre = db.Column(db.String(80), nullable=False)
+    texto = db.Column(db.String(300), nullable=False)
+    fecha = db.Column(db.DateTime, nullable=False, default=datetime.now)
+    avistamiento_id = db.Column(db.Integer, db.ForeignKey('avistamiento.id'), nullable=False)
+
+    avistamiento = db.relationship('Avistamiento', backref=db.backref('comentarios', lazy=True))
 
 
 @app.route('/')
@@ -182,6 +193,84 @@ def detalle_avistamiento(id):
 @app.route('/ver_indicadores')
 def ver_indicadores():
     return render_template('indicadores.html')
+
+@app.route('/api/avistamiento/<int:avistamiento_id>/comentarios', methods=['GET'])
+def obtener_comentarios(avistamiento_id):
+    comentarios = Comentario.query.filter_by(avistamiento_id=avistamiento_id).order_by(Comentario.fecha.desc()).all()
+    lista = [
+        {
+            'id': c.id,
+            'nombre': c.nombre,
+            'texto': c.texto,
+            'fecha': c.fecha.strftime('%d/%m/%Y %H:%M')
+        }
+        for c in comentarios
+    ]
+    return jsonify(lista)
+
+@app.route('/api/avistamiento/<int:avistamiento_id>/comentarios', methods=['POST'])
+def agregar_comentario(avistamiento_id):
+    data = request.get_json() or request.form
+    nombre = (data.get('nombre') or '').strip()
+    texto = (data.get('texto') or '').strip()
+
+    # Validaciones del servidor
+    errores = []
+    if len(nombre) < 3 or len(nombre) > 50:
+        errores.append("El nombre debe tener entre 3 y 50 caracteres.")
+    if len(texto) < 5:
+        errores.append("El texto del comentario debe tener al menos 5 caracteres.")
+
+    if errores:
+        return jsonify({'success': False, 'errores': errores}), 400
+
+    nuevo_comentario = Comentario(
+        nombre=nombre,
+        texto=texto,
+        avistamiento_id=avistamiento_id,
+        fecha=datetime.now()
+    )
+    db.session.add(nuevo_comentario)
+    db.session.commit()
+
+    return jsonify({'success': True, 'mensaje': 'Comentario agregado con éxito.'})
+
+@app.route('/api/estadisticas', methods=['GET'])
+def api_estadisticas():
+    # 1. Gráfico de líneas: Avistamientos por día
+    avistamientos_por_dia = db.session.query(
+        db.func.date(Avistamiento.fecha_hora).label('fecha'),
+        db.func.count(Avistamiento.id).label('total')
+    ).group_by(db.func.date(Avistamiento.fecha_hora)).order_by('fecha').all()
+
+    dias_labels = [row.fecha.strftime('%d/%m/%Y') for row in avistamientos_por_dia]
+    dias_values = [row.total for row in avistamientos_por_dia]
+
+    # 2. Gráfico de torta: Total de avistamientos por tipo de ave
+    avistamientos_por_ave = db.session.query(
+        Ave.nombre,
+        db.func.count(Avistamiento.id).label('total')
+    ).join(Avistamiento, Ave.id == Avistamiento.ave_id)\
+     .group_by(Ave.id).all()
+
+    aves_labels = [row.nombre for row in avistamientos_por_ave]
+    aves_values = [row.total for row in avistamientos_por_ave]
+
+    # 3. Gráfico de barras: Total de voluntarios por comuna
+    voluntarios_por_comuna = db.session.query(
+        Comuna.nombre,
+        db.func.count(Voluntario.id).label('total')
+    ).join(Voluntario, Comuna.id == Voluntario.comuna_id)\
+     .group_by(Comuna.id).all()
+
+    comunas_labels = [row.nombre for row in voluntarios_por_comuna]
+    comunas_values = [row.total for row in voluntarios_por_comuna]
+
+    return jsonify({
+        'lineas': {'labels': dias_labels, 'data': dias_values},
+        'torta': {'labels': aves_labels, 'data': aves_values},
+        'barras': {'labels': comunas_labels, 'data': comunas_values}
+    })
 
 if __name__ == '__main__':
     app.run(debug=True)
