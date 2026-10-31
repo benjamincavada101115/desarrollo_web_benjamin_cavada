@@ -25,7 +25,6 @@
                 const res = await fetch('/api/estadisticas');
                 const data = await res.json();
 
-                // 1. Gráfico de Líneas: Avistamientos por día
                 Highcharts.chart('grafico-lineas', {
                     chart: { type: 'line' },
                     title: { text: 'Cantidad de Avistamientos por Día' },
@@ -34,7 +33,6 @@
                     series: [{ name: 'Avistamientos', data: data.lineas.data }]
                 });
 
-                // 2. Gráfico de Torta: Avistamientos por tipo de ave
                 const tortaSeriesData = data.torta.labels.map((label, idx) => ({
                     name: label,
                     y: data.torta.data[idx]
@@ -46,7 +44,6 @@
                     series: [{ name: 'Avistamientos', data: tortaSeriesData }]
                 });
 
-                // 3. Gráfico de Barras: Voluntarios por comuna
                 Highcharts.chart('grafico-barras', {
                     chart: { type: 'column' },
                     title: { text: 'Total de Voluntarios Registrados por Comuna' },
