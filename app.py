@@ -1,13 +1,17 @@
 import os
-from datetime import datetime
-from flask import Flask, jsonify, render_template, request, redirect, url_for
+import re
+import uuid
+from datetime import datetime, timedelta
+from flask import Flask, jsonify, render_template, request, redirect, url_for, flash
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import func
 from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
+app.secret_key = 'clave_secreta_cc5002_tarea3'
 
 UPLOAD_FOLDER = 'static/uploads'
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'webp', 'mp4', 'mov', 'avi', 'webm'}
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
@@ -16,6 +20,8 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
 
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 class Region(db.Model):
     __tablename__ = 'region'
@@ -85,70 +91,133 @@ def get_comunas(region_id):
 
 @app.route('/registrar_voluntario', methods=['GET', 'POST'])
 def registrar_voluntario():
+
+    regiones = Region.query.all()
+
     if request.method == 'POST':
         nombre = request.form.get('nombre', '').strip()
         apellido = request.form.get('apellido', '').strip()
         email = request.form.get('email', '').strip()
         telefono = request.form.get('telefono', '').strip()
-        comuna_id = request.form.get('comuna')
+        comuna_id = request.form.get('comuna').strip()
 
-        if len(nombre) >= 3 and len(apellido) >= 3 and '@' in email and len(telefono) == 9 and comuna_id:
-            nuevo = Voluntario(
-                nombre=f"{nombre} {apellido}",
-                email=email,
-                telefono=telefono,
-                fecha_registro=datetime.now(),
-                comuna_id=int(comuna_id)
-            )
-            db.session.add(nuevo)
-            db.session.commit()
-            return redirect(url_for('index'))
+        errores = []
 
-    regiones = Region.query.all()
+        if len(nombre) < 3 or len(nombre) > 100:
+            errores.append("El nombre debe tener entre 3 y 100 caracteres.")
+        if len(apellido) < 3 or len(apellido) > 100:
+            errores.append("El apellido debe tener entre 3 y 100 caracteres.")
+
+        if not re.match(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$', email) or len(email) > 80:
+            errores.append("El correo electrónico no tiene un formato válido o supera los 80 caracteres.")
+
+        if not (telefono.isdigit() and len(telefono) == 9):
+            errores.append("El teléfono debe contener exactamente 9 dígitos numéricos.")
+
+        comuna_obj = db.session.get(Comuna, int(comuna_id)) if comuna_id.isdigit() else None
+        if not comuna_obj:
+            errores.append("Debe seleccionar una comuna válida existente.")
+
+        if errores:
+            return render_template('voluntario.html', regiones=regiones, errores=errores)
+
+        nuevo = Voluntario(
+            nombre=f"{nombre} {apellido}",
+            email=email,
+            telefono=telefono,
+            fecha_registro=datetime.now(),
+            comuna_id=comuna_obj.id
+        )
+        db.session.add(nuevo)
+        db.session.commit()
+
+        flash("¡Voluntario registrado con éxito!", "exito_voluntario") #CAMBIAR
+        return redirect(url_for('index'))
+    
     return render_template('voluntario.html', regiones=regiones)
 
 @app.route('/registrar_avistamiento', methods=['GET', 'POST'])
 def registrar_avistamiento():
-    if request.method == 'POST':
-        voluntario_id = request.form.get('voluntario')
-        ave_id = request.form.get('ave')
-        lugar = request.form.get('lugar', '').strip()
-        descripcion = request.form.get('descripcion', '').strip()
-        fecha = request.form.get('fecha')
-        hora = request.form.get('hora')
-        archivos = request.files.getlist('foto-video')
-
-        if voluntario_id and ave_id and len(lugar) >= 3 and fecha and hora:
-            fecha_hora = datetime.strptime(f"{fecha} {hora}", "%Y-%m-%d %H:%M")
-            
-            avistamiento = Avistamiento(
-                voluntario_id=int(voluntario_id),
-                ave_id=int(ave_id),
-                fecha_hora=fecha_hora,
-                lugar=lugar,
-                descripcion=descripcion
-            )
-            db.session.add(avistamiento)
-            db.session.commit()
-
-            for file in archivos:
-                if file and file.filename:
-                    filename = secure_filename(file.filename)
-                    filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-                    file.save(filepath)
-
-                    reg = Registro(
-                        ruta_archivo=f"uploads/{filename}",
-                        nombre_archivo=filename,
-                        avistamiento_id=avistamiento.id
-                    )
-                    db.session.add(reg)
-
-            db.session.commit()
-            return redirect(url_for('index'))
 
     voluntarios = Voluntario.query.all()
     aves = Ave.query.all()
+
+    if request.method == 'POST':
+        voluntario_id = request.form.get('voluntario', '').strip()
+        ave_id = request.form.get('ave', '').strip()
+        lugar = request.form.get('lugar', '').strip()
+        descripcion = request.form.get('descripcion', '').strip()
+        fecha = request.form.get('fecha', '').strip()
+        hora = request.form.get('hora', '').strip()
+        archivos = request.files.getlist('foto-video')
+
+        errores = []
+
+        voluntario_obj = db.session.get(Voluntario, int(voluntario_id)) if voluntario_id.isdigit() else None
+        if not voluntario_obj:
+            errores.append("Debe seleccionar un voluntario válido.")
+
+        ave_obj = db.session.get(Ave, int(ave_id)) if ave_id.isdigit() else None
+        if not ave_obj:
+            errores.append("Debe seleccionar un tipo de ave válido.")
+
+        if len(lugar) < 3 or len(lugar) > 200:
+            errores.append("El lugar debe tener entre 3 y 200 caracteres.")
+        if len(descripcion) > 500:
+            errores.append("La descripción no puede superar los 500 caracteres.")
+
+        fecha_hora = None
+        if not fecha or not hora:
+            errores.append("La fecha y la hora son obligatorias.")
+        else:
+            try:
+                fecha_hora = datetime.strptime(f"{fecha} {hora}", "%Y-%m-%d %H:%M")
+                ahora = datetime.now()
+                if fecha_hora > ahora:
+                    errores.append("La fecha y hora del avistamiento no pueden ser futuras.")
+                elif fecha_hora < (ahora - timedelta(days=365)):
+                    errores.append("La fecha del avistamiento no puede tener más de 1 año de antigüedad.")
+            except ValueError:
+                errores.append("El formato de fecha u hora no es válido.")
+
+        archivos_validos = [f for f in archivos if f and f.filename and f.filename.strip()]
+        if len(archivos_validos) == 0:
+            errores.append("Debe subir al menos una foto o video del avistamiento.")
+        else:
+            for file in archivos_validos:
+                if not allowed_file(file.filename):
+                    errores.append(f"El archivo '{file.filename}' no tiene un formato permitido (imágenes o videos).")
+
+        if errores:
+            return render_template('avistamiento.html', voluntarios=voluntarios, aves=aves, errores=errores)
+
+        avistamiento = Avistamiento(
+            voluntario_id=voluntario_obj.id,
+            ave_id=ave_obj.id,
+            fecha_hora=fecha_hora,
+            lugar=lugar,
+            descripcion=descripcion
+        )
+        db.session.add(avistamiento)
+        db.session.commit()
+
+        for file in archivos_validos:
+            original_name = secure_filename(file.filename)
+            unique_name = f"{uuid.uuid4().hex}_{original_name}"
+            filepath = os.path.join(app.config['UPLOAD_FOLDER'], unique_name)
+            file.save(filepath)
+
+            reg = Registro(
+                ruta_archivo=f"uploads/{unique_name}",
+                nombre_archivo=original_name,
+                avistamiento_id=avistamiento.id
+            )
+            db.session.add(reg)
+
+        db.session.commit()
+        flash("¡Avistamiento registrado con éxito!", "exito_avistamiento")
+        return redirect(url_for('index'))
+    
     return render_template('avistamiento.html', voluntarios=voluntarios, aves=aves)
 
 @app.route('/consultar_avistamientos')
@@ -161,12 +230,12 @@ def consultar_avistamientos():
     query = Avistamiento.query
 
     if tipo_ave != 'todos' and tipo_ave:
-        query = query.filter_by(ave_id=int(tipo_ave))
+        if tipo_ave.isdigit():
+            query = query.filter_by(ave_id=int(tipo_ave))
+        else:
+            query = query.filter_by(ave_id=-1)
 
-    if orden == 'lugar':
-        columna_orden = Avistamiento.lugar
-    else:
-        columna_orden = Avistamiento.fecha_hora
+    columna_orden = Avistamiento.lugar if orden == 'lugar' else Avistamiento.fecha_hora
 
     if orden_tipo == 'desc':
         query = query.order_by(columna_orden.desc())

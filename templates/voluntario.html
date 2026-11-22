@@ -12,6 +12,17 @@
         </p>
 
         <h1>Registrar Voluntarios</h1>
+        {% if errores %}
+            <div style="background-color: #f8d7da; color: #721c24; padding: 12px; margin: 15px auto; max-width: 600px; border-radius: 5px;">
+                <strong>Por favor corrige los siguientes errores:</strong>
+                <ul>
+                    {% for error in errores %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+        
         <form id = "form-voluntario" method="POST" action="{{ url_for('registrar_voluntario') }}">
             <p>
                 <label for="nombre">Nombre:</label><br>

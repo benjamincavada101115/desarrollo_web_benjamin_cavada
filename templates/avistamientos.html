@@ -9,10 +9,10 @@
             .fila-avistamiento:hover { background-color: #f4f4f4; }
         </style>
     </head>
-    <p> 
-        <a href="{{ url_for('index') }}">Volver</a>
-    </p>
+    
     <body>
+        <p><a href="{{ url_for('index') }}">Volver</a></p>
+
         <h1>Consultas de Avistamientos</h1>
         <form id = "form-avistamiento" method="GET" action="{{ url_for('consultar_avistamientos') }}">
             <label for="tipoAve">Tipo de ave:</label><br>

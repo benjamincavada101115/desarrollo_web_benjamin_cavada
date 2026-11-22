@@ -8,8 +8,23 @@
 
     <body>
         <header>
-            <h1>Avistamientos de aves</h1>
+            <h1>Sistema de Registro de Avistamiento de Aves</h1>
         </header>
+            <p>Bienvenido/a al portal ciudadano para el monitoreo y registro de avistamientos de aves en Chile.</p>
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div style="background-color: #d4edda; color: #155724; padding: 12px; margin: 15px auto; max-width: 600px; border-radius: 5px; text-align: center;">
+                            <strong>{{ message }}</strong>
+                            {% if category == 'exito_voluntario' %}
+                                <br><a href="{{ url_for('registrar_avistamiento') }}">¿Deseas registrar un avistamiento ahora?</a>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
         <main>
             <nav>
                 <ul>
