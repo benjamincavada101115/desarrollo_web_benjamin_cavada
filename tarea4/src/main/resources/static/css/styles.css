@@ -1,0 +1,211 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #f4f7f6;
+    color: #222222;
+    line-height: 1.5;
+}
+
+.encabezado {
+    background-color: #1b4332;
+    color: #ffffff;
+    padding: 1.5rem 1rem;
+    text-align: center;
+}
+
+.encabezado h1 {
+    font-size: 1.75rem;
+    margin-bottom: 0.4rem;
+}
+
+.encabezado p {
+    font-size: 0.95rem;
+    color: #d8f3dc;
+}
+
+.contenedor {
+    max-width: 960px;
+    margin: 1.5rem auto;
+    padding: 0 1rem;
+}
+
+.panel-busqueda,
+.panel-resultados {
+    background-color: #ffffff;
+    border: 1px solid #d9e2ec;
+    border-radius: 8px;
+    padding: 1.25rem;
+    margin-bottom: 1.5rem;
+}
+
+.panel-busqueda h2,
+.panel-resultados h2 {
+    font-size: 1.2rem;
+    color: #1b4332;
+    margin-bottom: 0.75rem;
+}
+
+.formulario-busqueda label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 0.4rem;
+}
+
+.formulario-busqueda input[type="text"] {
+    width: 100%;
+    padding: 0.65rem 0.8rem;
+    font-size: 1rem;
+    border: 1px solid #9fb3c8;
+    border-radius: 6px;
+}
+
+.formulario-busqueda input[type="text"]:focus {
+    outline: 2px solid #2d6a4f;
+    border-color: #2d6a4f;
+}
+
+.mensaje-estado {
+    padding: 0.75rem;
+    background-color: #eef6f2;
+    border-left: 4px solid #2d6a4f;
+    border-radius: 4px;
+    color: #1b4332;
+}
+
+.tabla-responsive {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.tabla-avistamientos {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 0.5rem;
+}
+
+.tabla-avistamientos th,
+.tabla-avistamientos td {
+    padding: 0.75rem;
+    text-align: left;
+    border-bottom: 1px solid #d9e2ec;
+}
+
+.tabla-avistamientos th {
+    background-color: #e6f2ec;
+    color: #1b4332;
+    font-weight: bold;
+}
+
+.tabla-avistamientos tr:hover {
+    background-color: #f8fbf9;
+}
+
+mark.coincidencia {
+    background-color: #ffe066;
+    color: #000000;
+    padding: 0 2px;
+    border-radius: 2px;
+    font-weight: bold;
+}
+
+.celda-nota {
+    font-weight: bold;
+    color: #1b4332;
+}
+
+.btn-evaluar,
+.btn-primario,
+.btn-secundario {
+    padding: 0.45rem 0.85rem;
+    font-size: 0.9rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.btn-evaluar,
+.btn-primario {
+    background-color: #2d6a4f;
+    color: #ffffff;
+}
+
+.btn-evaluar:hover,
+.btn-primario:hover {
+    background-color: #1b4332;
+}
+
+.btn-secundario {
+    background-color: #d9e2ec;
+    color: #222222;
+}
+
+.btn-secundario:hover {
+    background-color: #bcccdc;
+}
+
+.oculto {
+    display: none;
+}
+
+.modal-fondo {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.55);
+    padding: 1rem;
+}
+
+.modal-contenido {
+    background-color: #ffffff;
+    max-width: 420px;
+    margin: 10vh auto;
+    padding: 1.5rem;
+    border-radius: 8px;
+    border: 1px solid #d9e2ec;
+}
+
+.modal-contenido h2 {
+    color: #1b4332;
+    margin-bottom: 0.5rem;
+}
+
+.detalle-modal {
+    margin-bottom: 1rem;
+    color: #486581;
+    font-size: 0.95rem;
+}
+
+.campo-modal label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 0.4rem;
+}
+
+.campo-modal select {
+    width: 100%;
+    padding: 0.55rem;
+    font-size: 1rem;
+    border: 1px solid #9fb3c8;
+    border-radius: 5px;
+}
+
+.error-modal {
+    margin-top: 0.6rem;
+    color: #b00020;
+    font-size: 0.9rem;
+    font-weight: bold;
+}
+
+.botones-modal {
+    margin-top: 1.25rem;
+    display: flex;
+    gap: 0.6rem;
+    justify-content: flex-end;
+}

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buscador de Avistamientos - Tarea 4</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <header class="encabezado">
+        <h1>Buscador de Avistamientos de Aves</h1>
+        <p>Busca por nombre de ave, voluntario o comuna y evalúa los registros.</p>
+    </header>
+
+    <main class="contenedor">
+        <section class="panel-busqueda" aria-labelledby="titulo-busqueda">
+            <h2 id="titulo-busqueda">Filtrar avistamientos</h2>
+            <form id="form-busqueda" class="formulario-busqueda">
+                <label for="campo-busqueda">Escribe el nombre del ave, voluntario o comuna:</label>
+                <input type="text" id="campo-busqueda" name="q" placeholder="Ej: Diuca, Benjamin, Ñuñoa..." autocomplete="off">
+            </form>
+        </section>
+
+        <section class="panel-resultados" aria-labelledby="titulo-resultados">
+            <h2 id="titulo-resultados">Resultados</h2>
+            <div id="mensaje-estado" class="mensaje-estado" role="status" aria-live="polite">
+                Comienza a escribir en el buscador para ver los avistamientos registrados.
+            </div>
+            <div class="tabla-responsive">
+                <table id="tabla-resultados" class="tabla-avistamientos oculto">
+                    <thead>
+                        <tr>
+                            <th>Voluntario</th>
+                            <th>Día</th>
+                            <th>Ave</th>
+                            <th>Comuna</th>
+                            <th>Nota</th>
+                            <th>Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody id="cuerpo-tabla"></tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <div id="modal-evaluar" class="modal-fondo oculto" role="dialog" aria-modal="true" aria-labelledby="titulo-modal">
+        <div class="modal-contenido">
+            <h2 id="titulo-modal">Evaluar Avistamiento</h2>
+            <p id="detalle-modal" class="detalle-modal"></p>
+            <div class="campo-modal">
+                <label for="select-nota">Selecciona una nota (1 a 7):</label>
+                <select id="select-nota">
+                    <option value="">-- Elige una nota --</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                </select>
+            </div>
+            <p id="error-modal" class="error-modal oculto"></p>
+            <div class="botones-modal">
+                <button type="button" id="btn-guardar-nota" class="btn-primario">Guardar nota</button>
+                <button type="button" id="btn-cancelar-modal" class="btn-secundario">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/buscador.js"></script>
+</body>
+</html>
